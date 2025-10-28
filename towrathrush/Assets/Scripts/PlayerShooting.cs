@@ -7,6 +7,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform firePoint;
     public float fireRate = 0.3f;
+    public float projectileSpeed = 20f; // speed of the spawned projectile
     
     [Header("Auto Aim")]
     public bool useAutoAim = true;
@@ -62,7 +63,16 @@ public class PlayerShooting : MonoBehaviour
         Vector3 direction = GetShootDirection();
         Quaternion rotation = Quaternion.LookRotation(direction);
         
-        Instantiate(projectilePrefab, spawnPoint.position, rotation);
+        GameObject proj = Instantiate(projectilePrefab, spawnPoint.position, rotation);
+        Rigidbody rb = proj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = direction.normalized * projectileSpeed;
+        }
+        else
+        {
+            Debug.LogWarning("Spawned projectile has no Rigidbody; cannot set velocity.");
+        }
         
         Debug.Log("Player fired!");
     }
