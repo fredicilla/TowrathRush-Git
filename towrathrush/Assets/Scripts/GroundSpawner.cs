@@ -41,7 +41,7 @@ public class GroundSpawner : MonoBehaviour
         if (playerTransform.position.z > (spawnZ - initialGroundCount * groundLength))
         {
             SpawnGroundPiece();
-            DeleteOldGround();
+           // DeleteOldGround();
         }
     }
     
