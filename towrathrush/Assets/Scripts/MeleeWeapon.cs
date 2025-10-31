@@ -21,9 +21,23 @@ public class MeleeWeapon : MonoBehaviour
     
     void Start()
     {
+        if (swordVisual == null)
+        {
+            Transform swordTransform = transform.Find("Sword");
+            if (swordTransform != null)
+            {
+                swordVisual = swordTransform.gameObject;
+            }
+        }
+        
         if (swordVisual != null)
         {
             originalRotation = swordVisual.transform.localRotation;
+        }
+        
+        if (enemyLayer == 0)
+        {
+            enemyLayer = LayerMask.GetMask("Ground");
         }
     }
     
@@ -64,6 +78,12 @@ public class MeleeWeapon : MonoBehaviour
         {
             if (enemyCollider.CompareTag("Enemy"))
             {
+                if (enemyCollider.GetComponent<FlyingEnemy>() != null)
+                {
+                    Debug.Log("Cannot hit flying enemies with melee weapon!");
+                    continue;
+                }
+                
                 Vector3 directionToEnemy = (enemyCollider.transform.position - transform.position).normalized;
                 float angleToEnemy = Vector3.Angle(transform.forward, directionToEnemy);
                 

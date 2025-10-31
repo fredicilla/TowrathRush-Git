@@ -29,6 +29,13 @@ public class Projectile : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
             }
+            
+            FlyingEnemy flyingEnemy = other.GetComponent<FlyingEnemy>();
+            if (flyingEnemy != null)
+            {
+                flyingEnemy.TakeDamage(damage);
+            }
+            
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacle"))

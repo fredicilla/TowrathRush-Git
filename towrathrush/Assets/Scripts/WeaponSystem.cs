@@ -21,11 +21,30 @@ public class WeaponSystem : MonoBehaviour
     
     void Start()
     {
+        if (rangedWeapon == null)
+        {
+            rangedWeapon = GetComponent<PlayerShooting>();
+        }
+        
+        if (meleeWeapon == null)
+        {
+            meleeWeapon = GetComponent<MeleeWeapon>();
+        }
+        
         var playerInput = GetComponent<UnityEngine.InputSystem.PlayerInput>();
         if (playerInput != null)
         {
             attackAction = playerInput.actions["Attack"];
-            switchWeaponAction = playerInput.actions["SwitchWeapon"];
+            
+            var switchAction = playerInput.actions.FindAction("SwitchWeapon");
+            if (switchAction != null)
+            {
+                switchWeaponAction = switchAction;
+            }
+            else
+            {
+                Debug.LogWarning("SwitchWeapon action not found in Input Actions. Weapon switching disabled.");
+            }
         }
         
         UpdateWeaponVisuals();

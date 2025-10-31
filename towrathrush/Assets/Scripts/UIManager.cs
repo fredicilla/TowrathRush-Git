@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI coinsText;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI weaponText;
+    public TextMeshProUGUI phaseText;
     
     [Header("Game Over UI")]
     public TextMeshProUGUI finalScoreText;
@@ -81,6 +82,15 @@ public class UIManager : MonoBehaviour
         if (weaponText != null)
         {
             weaponText.text = $"Weapon: {weaponName}";
+        }
+    }
+    
+    public void UpdatePhase(string phaseName, Color phaseColor)
+    {
+        if (phaseText != null)
+        {
+            phaseText.text = phaseName;
+            phaseText.color = phaseColor;
         }
     }
     

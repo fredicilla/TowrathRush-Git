@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class ObstacleSpawner : MonoBehaviour
+public class FlyingEnemySpawner : MonoBehaviour
 {
-    [Header("Obstacle Settings")]
-    public GameObject obstaclePrefab;
-    public float spawnDistance = 50f;
-    public float minSpawnInterval = 2f;
-    public float maxSpawnInterval = 5f;
+    [Header("Flying Enemy Settings")]
+    public GameObject flyingEnemyPrefab;
+    public float spawnDistance = 70f;
+    public float minSpawnInterval = 4f;
+    public float maxSpawnInterval = 8f;
     public float laneDistance = 3f;
+    public float flyHeight = 4f;
     
     private Transform playerTransform;
     private float nextSpawnZ;
     private const int LANE_COUNT = 3;
-    private const float OBSTACLE_DESTROY_DELAY = 10f;
     
     void Start()
     {
@@ -38,26 +38,24 @@ public class ObstacleSpawner : MonoBehaviour
         
         if (playerTransform.position.z > nextSpawnZ - spawnDistance)
         {
-            SpawnObstacle();
+            SpawnFlyingEnemy();
         }
     }
     
-    void SpawnObstacle()
+    void SpawnFlyingEnemy()
     {
-        if (obstaclePrefab == null)
+        if (flyingEnemyPrefab == null)
         {
-            Debug.LogError("Obstacle prefab is not assigned!");
+            Debug.LogError("Flying Enemy prefab is not assigned!");
             return;
         }
         
         int randomLane = Random.Range(0, LANE_COUNT);
         float xPosition = (randomLane - 1) * laneDistance;
         
-        Vector3 spawnPosition = new Vector3(xPosition, 1, nextSpawnZ);
-        GameObject obstacle = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
-        obstacle.tag = "Obstacle";
-        
-        Destroy(obstacle, OBSTACLE_DESTROY_DELAY);
+        Vector3 spawnPosition = new Vector3(xPosition, flyHeight, nextSpawnZ);
+        GameObject flyingEnemy = Instantiate(flyingEnemyPrefab, spawnPosition, Quaternion.identity);
+        flyingEnemy.tag = "Enemy";
         
         float spawnIntervalMultiplier = 1f;
         if (GameManager.Instance != null)

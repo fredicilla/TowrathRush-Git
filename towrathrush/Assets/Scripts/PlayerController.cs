@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance != null && !GameManager.Instance.isGameActive)
             return;
+        
+        if (PhaseManager.Instance != null && PhaseManager.Instance.currentPhase == GamePhase.Transition)
+            return;
             
         MoveForward();
         MoveLateral();
@@ -78,17 +81,27 @@ public class PlayerController : MonoBehaviour
     
     void MoveForward()
     {
+        float currentSpeed = forwardSpeed;
+        
+        if (PhaseManager.Instance != null && PhaseManager.Instance.IsReversePhase())
+        {
+            currentSpeed = -currentSpeed;
+        }
+        
         Vector3 velocity = rb.linearVelocity;
-        velocity.z = forwardSpeed;
+        velocity.z = currentSpeed;
         rb.linearVelocity = velocity;
     }
     
     void MoveLateral()
     {
         float targetX = (currentLane - 1) * laneDistance;
-        Vector3 currentPosition = rb.position;
-        currentPosition.x = Mathf.Lerp(currentPosition.x, targetX, lateralSpeed * Time.fixedDeltaTime);
-        rb.position = currentPosition;
+        float currentX = transform.position.x;
+        float deltaX = targetX - currentX;
+        
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = deltaX * lateralSpeed;
+        rb.linearVelocity = velocity;
     }
     
     void CheckGrounded()

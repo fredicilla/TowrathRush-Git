@@ -12,8 +12,15 @@ public class GameManager : MonoBehaviour
     public float scoreMultiplier = 10f;
     public int coinScoreValue = 10;
     
+    [Header("Speed Progression")]
+    public float speedIncreaseInterval = 10f;
+    public float speedIncreaseAmount = 0.5f;
+    public float maxSpeedMultiplier = 3f;
+    
     private float score = 0f;
     private int coins = 0;
+    private float gameTime = 0f;
+    private float currentSpeedMultiplier = 1f;
     
     void Awake()
     {
@@ -31,13 +38,27 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive)
         {
+            gameTime += Time.deltaTime;
             score += Time.deltaTime * scoreMultiplier;
+            
+            UpdateSpeedMultiplier();
             
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.UpdateScore(GetScore());
             }
         }
+    }
+    
+    void UpdateSpeedMultiplier()
+    {
+        float targetMultiplier = 1f + (gameTime / speedIncreaseInterval) * speedIncreaseAmount;
+        currentSpeedMultiplier = Mathf.Min(targetMultiplier, maxSpeedMultiplier);
+    }
+    
+    public float GetSpeedMultiplier()
+    {
+        return currentSpeedMultiplier;
     }
     
     public void GameOver()
@@ -55,6 +76,17 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Game Over! Score: {GetScore()}");
     }
     
+    public void LevelComplete()
+    {
+        isGameActive = false;
+        Debug.Log($"Level Complete! Final Score: {GetScore()}");
+        
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameOver(GetScore());
+        }
+    }
+    
     public void RestartGame()
     {
         Time.timeScale = 1f;
@@ -70,6 +102,8 @@ public class GameManager : MonoBehaviour
     {
         score = 0f;
         coins = 0;
+        gameTime = 0f;
+        currentSpeedMultiplier = 1f;
     }
     
     public void CollectCoin(int amount = 1)

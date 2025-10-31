@@ -57,6 +57,13 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         enemy.tag = "Enemy";
         
-        nextSpawnZ += Random.Range(minSpawnInterval, maxSpawnInterval) * 10f;
+        float spawnIntervalMultiplier = 1f;
+        if (GameManager.Instance != null)
+        {
+            spawnIntervalMultiplier = 1f / GameManager.Instance.GetSpeedMultiplier();
+        }
+        
+        float adjustedInterval = Random.Range(minSpawnInterval, maxSpawnInterval) * spawnIntervalMultiplier;
+        nextSpawnZ += adjustedInterval * 10f;
     }
 }
