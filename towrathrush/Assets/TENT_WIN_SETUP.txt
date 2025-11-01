@@ -1,0 +1,224 @@
+═══════════════════════════════════════════════════════════════
+    TENT WIN TRIGGER SETUP - Return Home to Victory!
+═══════════════════════════════════════════════════════════════
+
+🎯 GOAL: Player wins when reaching tent during REVERSE phase
+
+═══════════════════════════════════════════════════════════════
+
+📋 SETUP INSTRUCTIONS
+---------------------
+
+OPTION 1: Add Trigger to Existing Tent
+---------------------------------------
+
+1. Select /TENT in Hierarchy
+
+2. Add Component → Box Collider
+   - Check "Is Trigger" ✓
+   - Size: Set large enough to detect player
+     X: 10
+     Y: 10
+     Z: 10
+   - Center: Adjust if needed
+
+3. Add Component → Tent Win Trigger
+   - Script will automatically detect reverse phase
+   - Visual color: Yellow (shows in Scene view)
+
+4. Done! Test by playing through to reverse phase
+
+
+OPTION 2: Create Separate Win Zone GameObject
+----------------------------------------------
+
+1. Right-click in Hierarchy → Create Empty
+   - Name it "TentWinZone"
+
+2. Position it at the tent:
+   - Transform Position:
+     X: 0
+     Y: 2
+     Z: -136 (same as tent)
+
+3. Add Component → Box Collider
+   - Check "Is Trigger" ✓
+   - Size: 
+     X: 10
+     Y: 10
+     Z: 10
+
+4. Add Component → Tent Win Trigger
+
+5. Done!
+
+
+═══════════════════════════════════════════════════════════════
+
+⚙️ HOW IT WORKS
+---------------
+
+PHASE 1: FORWARD
+Player starts at tent (Z=-136)
+→ Player runs forward to goal (Z=200)
+→ Player reaches goal trigger
+→ Switches to REVERSE PHASE
+
+PHASE 2: REVERSE
+Player at goal (Z=200)
+→ Player runs BACKWARD to tent (Z=-136)
+→ Player enters tent trigger zone
+→ TentWinTrigger checks: Is Reverse Phase? YES!
+→ Calls GameManager.LevelComplete()
+→ 🎉 VICTORY! 🎉
+
+
+PHASE 1 (Forward):
+Player at tent → Nothing happens (not reverse yet)
+
+PHASE 2 (Reverse):
+Player at tent → WIN! Level Complete!
+
+
+═══════════════════════════════════════════════════════════════
+
+🛠️ WHAT WAS CHANGED
+--------------------
+
+NEW FILES:
+- TentWinTrigger.cs (detects player return in reverse phase)
+
+UPDATED FILES:
+- PhaseManager.cs
+  * startPosition: Z=0 → Z=-136 (matches tent location)
+  * Win threshold: 5 units → 10 units (more forgiving)
+
+EXISTING SYSTEM:
+- PhaseManager already had LevelComplete() check
+- Just needed correct Z position and tent trigger
+
+
+═══════════════════════════════════════════════════════════════
+
+✅ VERIFICATION
+---------------
+
+1. Press Play
+2. Wait for cinematic to finish
+3. Run forward to goal (Z=200)
+4. Watch phase switch to REVERSE
+5. Run BACKWARD to tent (Z=-136)
+6. When you reach tent → LEVEL COMPLETE!
+
+Console should show:
+"Player reached the tent during reverse phase - LEVEL COMPLETE!"
+"LEVEL COMPLETE! You made it back to the start!"
+"Level Complete! Final Score: [your score]"
+
+
+═══════════════════════════════════════════════════════════════
+
+🎮 GAME FLOW
+------------
+
+START
+  ↓
+🎬 Cinematic (12 sec)
+  ↓
+⚡ PHASE 1: FORWARD
+  Run from Tent (Z=-136) → Goal (Z=200)
+  ↓
+🔄 TRANSITION
+  Player turns around at goal
+  ↓
+⚡ PHASE 2: REVERSE
+  Run from Goal (Z=200) → Tent (Z=-136)
+  ↓
+🏆 REACH TENT = WIN!
+  Trigger zone detects player
+  Game shows victory screen
+
+
+═══════════════════════════════════════════════════════════════
+
+🔧 TROUBLESHOOTING
+------------------
+
+ISSUE: Player reaches tent but doesn't win
+
+FIX:
+1. Check TENT or TentWinZone has Box Collider
+2. Make sure "Is Trigger" is CHECKED
+3. Make sure TentWinTrigger script is attached
+4. Check console - should see "Player at tent but not in reverse phase yet..."
+   (This means trigger works, but you're not in reverse phase)
+
+
+ISSUE: Win happens too early/late
+
+FIX:
+1. Adjust Box Collider SIZE on tent trigger
+2. Bigger size = win earlier
+3. Smaller size = win later (must get closer)
+
+
+ISSUE: Nothing happens at all
+
+FIX:
+1. Make sure Player has tag "Player"
+2. Check PhaseManager exists in scene
+3. Check GameManager exists in scene
+4. Look at console for error messages
+
+
+═══════════════════════════════════════════════════════════════
+
+💡 CUSTOMIZATION
+----------------
+
+Change Trigger Size:
+- Select tent/TentWinZone
+- Box Collider → Size
+- Bigger = easier to win (detect from far)
+- Smaller = harder to win (must get close)
+
+Change Win Message:
+- Open TentWinTrigger.cs
+- Edit line 13: "LEVEL COMPLETE!"
+
+Add Visual Effect:
+- Attach particle system to tent
+- Trigger particles when player returns
+
+
+═══════════════════════════════════════════════════════════════
+
+📊 CURRENT SETUP SUMMARY
+-------------------------
+
+Tent Position:     Z = -136
+Goal Position:     Z = 200
+Level Length:      336 units
+
+Player Journey:
+  START:  Tent (-136)
+  FORWARD: → Goal (200)  [336 units]
+  REVERSE: ← Tent (-136) [336 units]
+  TOTAL:   672 units of gameplay!
+
+Win Condition:
+  Player.Z <= -126 (within 10 units of tent at -136)
+  AND currently in Reverse Phase
+  = VICTORY!
+
+
+═══════════════════════════════════════════════════════════════
+
+🎉 READY TO TEST!
+-----------------
+
+Add the Box Collider + TentWinTrigger to your TENT GameObject
+and test the full level loop!
+
+
+═══════════════════════════════════════════════════════════════

@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 8f;
     public float laneDistance = 3f;
     
+    [Header("Control")]
+    public bool canMove = false;
+    
     [Header("Ground Check")]
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.2f;
@@ -36,6 +39,9 @@ public class PlayerController : MonoBehaviour
     
     void FixedUpdate()
     {
+        if (!canMove)
+            return;
+            
         if (GameManager.Instance != null && !GameManager.Instance.isGameActive)
             return;
         
@@ -113,6 +119,12 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
+            EnvironmentObstacle envObstacle = collision.gameObject.GetComponent<EnvironmentObstacle>();
+            if (envObstacle != null)
+            {
+                return;
+            }
+            
             HealthSystem health = GetComponent<HealthSystem>();
             if (health != null)
             {

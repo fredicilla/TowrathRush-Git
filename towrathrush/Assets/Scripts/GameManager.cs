@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     [Header("Game State")]
-    public bool isGameActive = true;
+    public bool isGameActive = false;
     
     [Header("Game Settings")]
     public float scoreMultiplier = 10f;

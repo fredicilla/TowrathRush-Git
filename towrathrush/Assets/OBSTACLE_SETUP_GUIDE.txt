@@ -1,0 +1,188 @@
+═══════════════════════════════════════════════════════════════
+    RUSH WRATH - ENVIRONMENT OBSTACLE MANUAL PLACEMENT GUIDE
+═══════════════════════════════════════════════════════════════
+
+📋 GAME OVERVIEW
+----------------
+Phase 1 (FORWARD): Run from Z=0 to Z=200, memorize obstacle positions
+Phase 2 (REVERSE): Run back Z=200 to Z=0, dodge obstacles from memory + fight enemies
+
+3-Lane System:
+  LEFT   = X: -3 (Lane -1)
+  MIDDLE = X:  0 (Lane 0)
+  RIGHT  = X:  3 (Lane 1)
+
+
+🎯 YOUR OBSTACLE TYPES
+----------------------
+
+1. CACTUS - Single Lane
+   └─ Place at X: -3, 0, or 3
+   └─ Takes 1 lane
+   └─ Instant Death: YES
+
+2. BIG BOULDER - Two Adjacent Lanes
+   └─ Place at X: -1.5 (blocks Left+Middle)
+   └─ OR X: 1.5 (blocks Middle+Right)
+   └─ Takes 2 side-by-side lanes
+   └─ Instant Death: YES
+
+3. N-SHAPED ROCK - Two Opposite Lanes
+   └─ Place at X: 0 (centered)
+   └─ Blocks Left+Right lanes (player goes through middle)
+   └─ Takes 2 opposite lanes
+   └─ Instant Death: YES
+
+4. TREE - All Three Lanes
+   └─ Place at X: 0 (centered)
+   └─ Blocks all lanes - MUST JUMP
+   └─ Takes all 3 lanes
+   └─ Instant Death: YES
+
+
+🛠️ SETUP STEPS (Do Once Per Obstacle Type)
+-------------------------------------------
+
+1. EXTRACT MESH FROM FBX
+   - In Project window, expand /Assets/Enviroment/enviroment.fbx
+   - Find your obstacle mesh (Cactus, Boulder, NRock, Tree)
+   - Drag into Hierarchy temporarily
+
+2. ADD OBSTACLE SCRIPT
+   - Select the GameObject
+   - Add Component → "EnvironmentObstacle"
+   - Check "Is Instant Death" = TRUE
+   - Damage Amount = 1 (ignored when instant death is on)
+
+3. ADD COLLIDER
+   - Add Component → Box Collider (or Mesh Collider)
+   - Adjust size to fit obstacle tightly
+   - Leave "Is Trigger" UNCHECKED (solid collision)
+
+4. SET TAG
+   - Top of Inspector → Tag → "Obstacle"
+
+5. CREATE PREFAB
+   - Drag GameObject from Hierarchy → /Assets/Prefabs/
+   - Name it: Cactus, BigBoulder, NRock, or Tree
+   - Delete from Hierarchy (prefab saved)
+
+6. REPEAT for all 4 obstacle types
+
+
+📍 PLACING OBSTACLES IN SCENE
+------------------------------
+
+Your scene already has /Obstacles parent with 10 obstacles.
+Add your environment obstacles the same way:
+
+1. Drag prefab from /Assets/Prefabs/ into scene
+2. Parent it under "/Obstacles" GameObject
+3. Position manually:
+   - X position based on lane configuration (see above)
+   - Y position: 0.5 to 1.0 (on ground)
+   - Z position: anywhere from 10 to 190 (before goal at 200)
+
+4. Rename for clarity: "Obstacle_11_Cactus", "Obstacle_12_Tree", etc.
+
+EXAMPLE PLACEMENTS:
+  Cactus at Z=25, Left Lane:     X=-3, Y=0.5, Z=25
+  Boulder at Z=50, Blocks L+M:   X=-1.5, Y=0.5, Z=50
+  NRock at Z=75, Blocks L+R:     X=0, Y=0.5, Z=75
+  Tree at Z=100, Blocks All:     X=0, Y=1, Z=100
+
+
+💡 PLACEMENT TIPS
+-----------------
+
+✓ Spread obstacles from Z=10 to Z=190
+✓ Vary lane positions for interesting patterns
+✓ Use Trees sparingly - they force jumps
+✓ Place obstacles at least 5-10 units apart
+✓ Test both forward AND reverse phases
+✓ Remember: Player memorizes in Phase 1, dodges in Phase 2
+
+
+🔧 TESTING
+----------
+
+1. Enter Play Mode
+2. Phase 1: Run forward, note obstacle positions
+3. Reach Goal at Z=200
+4. Phase 2: Run back, try to avoid obstacles
+5. Collision = Instant Death → Game Over
+6. Check Console for "Player hit [name] - Instant Death!"
+
+
+⚠️ TROUBLESHOOTING
+-------------------
+
+Obstacle doesn't kill player:
+  → Check "Obstacle" tag is set
+  → Check EnvironmentObstacle script attached
+  → Check "Is Instant Death" enabled
+  → Check collider exists and isn't trigger
+
+Player passes through obstacle:
+  → Check collider size covers the mesh
+  → Player has Rigidbody (should already have)
+  → Collider is NOT set to "Is Trigger"
+
+Obstacle looks wrong:
+  → Create materials in /Assets/Materials/
+  → Assign to MeshRenderer on obstacle
+  → Check lighting in scene
+
+Wrong position:
+  → Use Scene view gizmos for reference
+  → Lane positions: -3, 0, 3
+  → Multi-lane obstacles should be centered
+
+
+📂 FILE LOCATIONS
+------------------
+
+Script:
+  /Assets/Scripts/EnvironmentObstacle.cs
+
+Models:
+  /Assets/Enviroment/enviroment.fbx
+
+Prefabs (you create):
+  /Assets/Prefabs/Cactus.prefab
+  /Assets/Prefabs/BigBoulder.prefab
+  /Assets/Prefabs/NRock.prefab
+  /Assets/Prefabs/Tree.prefab
+
+Scene Structure:
+  /Obstacles
+    /Obstacle_01 through _10 (existing)
+    /Obstacle_11_Cactus (yours)
+    /Obstacle_12_Tree (yours)
+    ... etc
+
+
+✨ QUICK REFERENCE
+------------------
+
+Lane X Positions:
+  Left:   -3
+  Middle:  0
+  Right:   3
+
+Multi-Lane Centers:
+  Left+Middle:    -1.5
+  Middle+Right:    1.5
+  Left+Right:      0 (centered)
+  All Three:       0 (centered)
+
+Level Bounds:
+  Start: Z = 0
+  Goal:  Z = 200
+  Safe obstacle range: Z = 10 to 190
+
+
+═══════════════════════════════════════════════════════════════
+Everything is set up for MANUAL PLACEMENT. Just create prefabs
+and drag them into /Obstacles parent at your desired positions!
+═══════════════════════════════════════════════════════════════

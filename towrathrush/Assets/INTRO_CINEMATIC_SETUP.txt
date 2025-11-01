@@ -1,0 +1,215 @@
+═══════════════════════════════════════════════════════════════
+    RUSH WRATH - INTRO CINEMATIC SETUP GUIDE
+═══════════════════════════════════════════════════════════════
+
+🎬 CINEMATIC SEQUENCE
+---------------------
+ONE SMOOTH CONTINUOUS SHOT with SLIGHT ARC:
+
+PLAYS ONLY ONCE (first time you start the game):
+
+1. Camera starts BEHIND tent, low to ground (cinematic angle)
+2. Camera SMOOTHLY rises in a gentle arc while moving forward
+3. Camera reveals the level ahead with dramatic perspective
+4. Camera settles at moderate height overlooking the path
+5. Player runs out of tent
+6. Camera transitions to follow player and gameplay starts
+
+IF PLAYER DIES & RESTARTS:
+- Cinematic is SKIPPED
+- Game starts immediately at tent with camera following
+- Player can move right away
+
+CAMERA STYLE: Smooth crane shot with slight upward arc
+FEEL: Like a movie opening - dramatic but not too high!
+
+
+🛠️ SETUP STEPS
+---------------
+
+STEP 1: CREATE CINEMATIC CONTROLLER
+------------------------------------
+1. In Hierarchy, create Empty GameObject (Right-click → Create Empty)
+2. Rename it to "IntroCinematic"
+3. In Inspector, click "Add Component"
+4. Type: "IntroCinematic"
+5. Press Enter
+
+
+STEP 2: CONFIGURE REFERENCES (Auto-filled, but verify)
+-------------------------------------------------------
+The script will auto-find these, but you can manually assign:
+
+- Main Camera: Drag "/Main Camera" from Hierarchy
+- Tent: Drag "/TENT" from Hierarchy  
+- Player: Drag "/Player" from Hierarchy
+
+
+STEP 3: ADJUST CAMERA POSITIONS (Optional)
+-------------------------------------------
+NEW IMPROVED SETTINGS for cinematic feel:
+
+Start Camera Offset (behind tent, LOW):
+  X: 0      (centered behind tent)
+  Y: 1.5    (LOW - near ground level, dramatic!)
+  Z: -6     (closer to tent)
+
+End Camera Offset (forward, MODERATE height):
+  X: 0      (still centered)
+  Y: 8      (moderate elevation - NOT too high!)
+  Z: 40     (forward down the track)
+
+BONUS: Camera has automatic UPWARD ARC during movement
+       (adds +2 units at peak for smooth rising motion)
+
+
+STEP 4: ADJUST TIMING (Optional)
+---------------------------------
+Control how long the shot lasts:
+
+- Cinematic Duration: 12 seconds (entire smooth camera movement)
+- Delay Before Player Runs: 1 second (pause after camera stops)
+
+TOTAL CINEMATIC TIME: ~15 seconds before gameplay starts
+
+The camera moves CONTINUOUSLY for the entire duration!
+
+
+STEP 5: PLAYER START POSITION (Optional)
+-----------------------------------------
+Where player starts/ends relative to tent:
+
+Player Start Position Offset:
+  X: 0
+  Y: 0
+  Z: -3   (inside/behind tent)
+
+Player End Position Offset:
+  X: 0
+  Y: 0
+  Z: 3    (in front of tent)
+
+Player Run Speed: 8 (how fast player runs out)
+
+
+STEP 6: POSITION YOUR TENT
+---------------------------
+1. Select "/TENT" in Hierarchy
+2. Set Position in Inspector:
+   X: 0    (centered in middle lane)
+   Y: 0    (on ground)
+   Z: -5   (behind starting point)
+
+This puts the tent at the start of your level!
+
+
+STEP 7: TEST THE CINEMATIC
+---------------------------
+FIRST TIME PLAYING:
+1. Press Play
+2. Full cinematic plays automatically (~15 seconds):
+   
+   00:00 - Camera behind tent, low angle
+   00:00-12 - Camera SMOOTHLY rises and moves forward
+   00:12 - Camera reaches elevated forward position
+   00:13 - Player runs out of tent!
+   00:15 - Camera follows, gameplay starts!
+
+AFTER RESTARTING (Player dies):
+1. Press Play
+2. Cinematic SKIPPED - instant gameplay!
+3. Player at tent, ready to move immediately
+
+CAMERA MOVEMENT: Continuous smooth motion (no stops!)
+
+TO SEE CINEMATIC AGAIN:
+- Unity Menu → Edit → Clear All PlayerPrefs
+- OR uncheck "Skip On Restart" in IntroCinematic component
+
+
+🎮 HOW IT WORKS
+---------------
+
+START:
+- Player controls disabled
+- GameManager.isGameActive = false
+- CameraFollow disabled
+- Camera takes manual control
+
+DURING:
+- Camera animates through positions
+- Player animated running out of tent
+
+END:
+- Player controls enabled
+- GameManager.isGameActive = true
+- CameraFollow enabled
+- IntroCinematic deletes itself
+- Normal gameplay begins!
+
+
+⚙️ ADVANCED CUSTOMIZATION
+--------------------------
+
+MAKE IT LONGER:
+- Increase "Cinematic Duration" (try 15-20 seconds)
+
+MAKE IT FASTER:
+- Decrease "Cinematic Duration" (try 8-10 seconds)
+
+CHANGE CAMERA START:
+- Adjust "Start Camera Offset"
+- Lower Y = closer to ground
+- More negative Z = further behind tent
+
+CHANGE CAMERA END:
+- Adjust "End Camera Offset"
+- Higher Y = more elevated view (but keep under 20 for cinematic feel)
+- Higher Z = further forward down the track
+
+MAKE IT MORE DRAMATIC:
+- Start with Y=1 (very low, ground level)
+- End with Y=15, Z=80 (high, far forward)
+
+SKIP CINEMATIC (For Testing):
+- Disable the "IntroCinematic" GameObject in Hierarchy
+
+
+🔧 TROUBLESHOOTING
+------------------
+
+Camera doesn't move:
+→ Make sure CameraFollow is enabled in scene
+→ Check that Main Camera is assigned
+
+Player doesn't run out:
+→ Check TENT position is set correctly
+→ Verify Player is assigned in script
+
+Cinematic plays every time:
+→ This is normal! It plays on scene start
+→ To skip: disable IntroCinematic GameObject
+
+Controls don't work after cinematic:
+→ Check Console for "Intro cinematic finished" message
+→ Make sure GameManager exists in scene
+
+
+📂 FILES
+--------
+Script: /Assets/Scripts/IntroCinematic.cs
+Guide:  /Assets/INTRO_CINEMATIC_SETUP.txt
+
+
+✨ TIPS
+-------
+✓ Test in Play Mode to preview the cinematic
+✓ Adjust timing to match your game's pacing
+✓ Position obstacles to look good in top-down shot
+✓ You can add music/sound effects later
+✓ Consider fading in from black for polish
+
+
+═══════════════════════════════════════════════════════════════
+                    Ready for your epic intro!
+═══════════════════════════════════════════════════════════════

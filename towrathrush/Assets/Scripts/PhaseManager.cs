@@ -16,7 +16,7 @@ public class PhaseManager : MonoBehaviour
     public float transitionDuration = 2f;
     
     [Header("Level Positions")]
-    public Vector3 startPosition = new Vector3(0, 1, 0);
+    public Vector3 startPosition = new Vector3(0, 2, -136);
     public Vector3 endPosition = new Vector3(0, 2, 200);
     
     [Header("References")]
@@ -167,7 +167,7 @@ public class PhaseManager : MonoBehaviour
             nextEnemySpawnTime = Time.time + enemySpawnInterval;
         }
         
-        if (player != null && player.position.z <= startPosition.z + 5f)
+        if (player != null && player.position.z <= startPosition.z + 10f)
         {
             LevelComplete();
         }
